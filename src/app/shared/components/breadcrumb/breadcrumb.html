@@ -1,0 +1,21 @@
+<nav class="breadcrumb-nav" aria-label="Classification path">
+  <ol class="breadcrumb-list">
+    <li class="breadcrumb-item">
+      <button class="breadcrumb-link breadcrumb-link--home" (click)="homeClicked.emit()" aria-label="Return to top level">
+        <span>⊞</span>
+        <span>All Sections</span>
+      </button>
+    </li>
+
+    @for (crumb of items(); track crumb.code; let last = $last) {
+      <li class="breadcrumb-separator" aria-hidden="true">›</li>
+      <li class="breadcrumb-item">
+        @if (last) {
+          <span class="breadcrumb-current" aria-current="page">{{ crumb.label }}</span>
+        } @else {
+          <button class="breadcrumb-link" (click)="crumbClicked.emit(crumb)">{{ crumb.label }}</button>
+        }
+      </li>
+    }
+  </ol>
+</nav>

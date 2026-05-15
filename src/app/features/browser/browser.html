@@ -1,0 +1,165 @@
+<div class="browser">
+
+  @if (breadcrumbs().length > 0) {
+    <div class="browser-breadcrumbs">
+      <app-breadcrumb
+        [items]="breadcrumbs()"
+        (crumbClicked)="onBreadcrumbClick($event)"
+        (homeClicked)="onHomeClick()"
+      />
+    </div>
+  }
+
+  <div class="browser-content">
+    @switch (currentLevel()) {
+
+      @case ('root') {
+        <div class="level-header">
+          <h2 class="level-title">CPC Classification Sections</h2>
+          <p class="level-subtitle">Select a section to explore classes and subclasses.</p>
+        </div>
+        <div class="section-grid">
+          @for (section of sections; track section.code) {
+            <button
+              class="section-card"
+              [style.--section-color]="section.color"
+              (click)="selectSection(section)"
+            >
+              <div class="section-card-code">{{ section.code }}</div>
+              <div class="section-card-body">
+                <div class="section-card-title">{{ section.title }}</div>
+                <div class="section-card-desc">{{ section.description }}</div>
+                <div class="section-card-meta">
+                  <app-badge variant="count" [value]="section.subclassCount" />
+                  <span class="section-card-meta-label">subclasses</span>
+                </div>
+              </div>
+            </button>
+          }
+        </div>
+      }
+
+      @case ('section') {
+        <div class="level-header">
+          <div class="level-header-top">
+            <span class="level-badge-code">{{ selectedSection()?.code }}</span>
+            <h2 class="level-title">{{ selectedSection()?.title }}</h2>
+          </div>
+          <p class="level-subtitle">{{ selectedSection()?.description }}</p>
+        </div>
+        @if (loadingClasses()) {
+          <div class="loading-row"><span class="spinner"></span> Loading classes&hellip;</div>
+        } @else {
+          <div class="list-grid">
+            @for (cls of classes(); track cls.code) {
+              <button class="list-card" (click)="selectClass(cls)">
+                <div class="list-card-header">
+                  <code class="list-card-code">{{ cls.code }}</code>
+                  <app-badge variant="count" [value]="cls.subclassCount" />
+                </div>
+                <div class="list-card-title">{{ cls.title }}</div>
+                <div class="list-card-desc">{{ cls.description }}</div>
+              </button>
+            } @empty {
+              <p class="empty-state">No classes found for this section.</p>
+            }
+          </div>
+        }
+      }
+
+      @case ('class') {
+        <div class="level-header">
+          <div class="level-header-top">
+            <span class="level-badge-code">{{ selectedClass()?.code }}</span>
+            <h2 class="level-title">{{ selectedClass()?.title }}</h2>
+          </div>
+          <p class="level-subtitle">{{ selectedClass()?.description }}</p>
+        </div>
+        @if (loadingSubclasses()) {
+          <div class="loading-row"><span class="spinner"></span> Loading subclasses&hellip;</div>
+        } @else {
+          <div class="list-grid">
+            @for (sub of subclasses(); track sub.code) {
+              <button class="list-card" (click)="selectSubclass(sub)">
+                <div class="list-card-header">
+                  <code class="list-card-code">{{ sub.code }}</code>
+                  <div class="list-card-badges">
+                    <app-badge variant="count" [value]="sub.groupCount" />
+                    @if (sub.recentFilings) {
+                      <span class="filing-count">{{ sub.recentFilings | number }} filings/yr</span>
+                    }
+                  </div>
+                </div>
+                <div class="list-card-title">{{ sub.title }}</div>
+                <div class="list-card-desc">{{ sub.description }}</div>
+              </button>
+            } @empty {
+              <p class="empty-state">No subclasses found for this class.</p>
+            }
+          </div>
+        }
+      }
+
+      @case ('subclass') {
+        <div class="level-header">
+          <div class="level-header-top">
+            <span class="level-badge-code">{{ selectedSubclass()?.code }}</span>
+            <h2 class="level-title">{{ selectedSubclass()?.title }}</h2>
+          </div>
+          <p class="level-subtitle">{{ selectedSubclass()?.description }}</p>
+          @if (selectedSubclass()?.recentFilings) {
+            <div class="filing-stat">
+              <span class="filing-stat-value">{{ selectedSubclass()!.recentFilings! | number }}</span>
+              <span class="filing-stat-label">recent annual filings</span>
+            </div>
+          }
+        </div>
+        @if (loadingGroups()) {
+          <div class="loading-row"><span class="spinner"></span> Loading groups&hellip;</div>
+        } @else {
+          <div class="groups-list">
+            @for (group of groups(); track group.code) {
+              <div
+                class="group-row"
+                [class.group-row--main]="group.isMainGroup"
+                [class.group-row--sub]="!group.isMainGroup"
+                (click)="selectGroup(group)"
+                role="button"
+                tabindex="0"
+                (keydown.enter)="selectGroup(group)"
+              >
+                <code class="group-code">{{ group.code }}</code>
+                <span class="group-title">{{ group.title }}</span>
+                @if (group.isMainGroup) {
+                  <app-badge variant="group" value="Main Group" />
+                }
+              </div>
+            } @empty {
+              <p class="empty-state">No groups available for this subclass.</p>
+            }
+          </div>
+        }
+      }
+
+      @case ('group') {
+        <div class="level-header">
+          <code class="group-detail-code">{{ selectedGroup()?.code }}</code>
+          <h2 class="level-title">{{ selectedGroup()?.title }}</h2>
+          @if (selectedGroup()?.isMainGroup) {
+            <app-badge variant="group" value="Main Group" />
+          }
+        </div>
+        <div class="group-detail-body">
+          <p>Deepest classification level. In a production system this would link to:</p>
+          <ul>
+            <li>Patent documents assigned to this group</li>
+            <li>Cross-references and synonymous classifications</li>
+            <li>Hierarchical child groups</li>
+            <li>Examination guidelines for this technology area</li>
+          </ul>
+        </div>
+      }
+
+    }
+  </div>
+</div>

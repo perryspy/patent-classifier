@@ -1,1 +1,77 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+:root,
+[data-theme="dark"] {
+  --color-bg:             #0d1117;
+  --color-surface-1:      #161b22;
+  --color-surface-2:      #1c2330;
+  --color-border:         #2a3140;
+  --color-text-primary:   #e6edf3;
+  --color-muted:          #5a6472;
+  --color-accent:         #58a6ff;
+  --color-accent-ghost:   rgba(88, 166, 255, 0.12);
+  --color-secondary:      #7ee787;
+
+  --badge-section-bg:     rgba(88, 166, 255, 0.15);
+  --badge-section-fg:     #58a6ff;
+  --badge-class-bg:       rgba(126, 231, 135, 0.15);
+  --badge-class-fg:       #7ee787;
+  --badge-subclass-bg:    rgba(210, 153, 34, 0.15);
+  --badge-subclass-fg:    #d29922;
+  --badge-group-bg:       rgba(188, 140, 255, 0.15);
+  --badge-group-fg:       #bc8cff;
+
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+[data-theme="light"] {
+  --color-bg:             #ffffff;
+  --color-surface-1:      #f6f8fa;
+  --color-surface-2:      #eaeef2;
+  --color-border:         #d0d7de;
+  --color-text-primary:   #1f2328;
+  --color-muted:          #868e96;
+  --color-accent:         #0969da;
+  --color-accent-ghost:   rgba(9, 105, 218, 0.1);
+  --color-secondary:      #1a7f37;
+
+  --badge-section-bg:     rgba(9, 105, 218, 0.1);
+  --badge-section-fg:     #0969da;
+  --badge-class-bg:       rgba(26, 127, 55, 0.1);
+  --badge-class-fg:       #1a7f37;
+  --badge-subclass-bg:    rgba(154, 103, 0, 0.1);
+  --badge-subclass-fg:    #9a6700;
+  --badge-group-bg:       rgba(130, 80, 223, 0.1);
+  --badge-group-fg:       #8250df;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-muted); }
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

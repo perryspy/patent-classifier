@@ -1,0 +1,8 @@
+@switch (variant()) {
+  @case ('count') {
+    <span>{{ value() | number }}</span>
+  }
+  @default {
+    <span>{{ value() }}</span>
+  }
+}

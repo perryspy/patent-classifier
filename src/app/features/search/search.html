@@ -1,0 +1,89 @@
+<div class="search-panel">
+  <h2 class="search-title">
+    <span>⌕</span>
+    Classification Search
+  </h2>
+
+  <form [formGroup]="searchForm" class="search-form">
+
+    <div class="search-input-row">
+      <input
+        formControlName="term"
+        type="search"
+        class="search-input"
+        placeholder='Search by code or keyword (e.g. "A61B" or "neural network")'
+        autocomplete="off"
+      />
+      @if (searchForm.get('term')?.value) {
+        <button type="button" class="search-clear" (click)="clearSearch()">✕</button>
+      }
+    </div>
+
+    <div class="search-filters">
+      <div class="filter-group">
+        <label class="filter-label" for="systemSelect">System</label>
+        <select id="systemSelect" formControlName="system" class="filter-select">
+          <option value="CPC">CPC (Cooperative Patent Classification)</option>
+          <option value="IPC">IPC (International Patent Classification)</option>
+          <option value="USPC">USPC (US Patent Classification)</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label" for="sectionSelect">Limit to Section</label>
+        <select id="sectionSelect" formControlName="sectionFilter" class="filter-select">
+          <option value="">All Sections</option>
+          @for (section of sections; track section.code) {
+            <option [value]="section.code">{{ section.code }} – {{ section.title }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="search-results">
+
+    @if (isSearching()) {
+      <div class="search-loading">
+        <span class="spinner"></span>
+        Searching&hellip;
+      </div>
+    }
+
+    @if (!isSearching() && searchResults().length > 0) {
+      <p class="results-count">{{ searchResults().length }} result(s)</p>
+      <ul class="results-list">
+        @for (result of searchResults(); track result.code) {
+          <li class="result-item">
+            <div class="result-header">
+              <code class="result-code">{{ result.code }}</code>
+              <app-badge [variant]="result.level" [value]="result.level" />
+            </div>
+            <p class="result-title">{{ result.title }}</p>
+            <p class="result-desc">{{ result.description }}</p>
+            @if (result.breadcrumb.length > 1) {
+              <p class="result-breadcrumb">{{ result.breadcrumb.join(' › ') }}</p>
+            }
+          </li>
+        }
+      </ul>
+    }
+
+    @if (!isSearching() && hasSearched() && searchResults().length === 0) {
+      <div class="no-results">
+        <span class="no-results-icon">⊘</span>
+        <p>No results for <strong>"{{ lastSearchTerm() }}"</strong></p>
+        <p class="no-results-hint">Try a broader term or different section filter.</p>
+      </div>
+    }
+
+    @if (!hasSearched()) {
+      <div class="search-hint">
+        <p>Enter a code (e.g. <code>G06N</code>) or keyword</p>
+        <p>to search across all CPC classifications.</p>
+      </div>
+    }
+
+  </div>
+</div>

@@ -1,0 +1,17 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+:host(.badge--section)  { background: var(--badge-section-bg);  color: var(--badge-section-fg);  }
+:host(.badge--class)    { background: var(--badge-class-bg);    color: var(--badge-class-fg);    }
+:host(.badge--subclass) { background: var(--badge-subclass-bg); color: var(--badge-subclass-fg); }
+:host(.badge--group)    { background: var(--badge-group-bg);    color: var(--badge-group-fg);    }
+:host(.badge--count)    { background: var(--color-surface-2);   color: var(--color-muted);       }
