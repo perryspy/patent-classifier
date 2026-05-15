@@ -1,4 +1,4 @@
-# PatentClass
+# Patent Classifier
 
 A USPTO/EPO-style CPC patent classification browser built with Angular 21. Built as a
 hands-on reference for modern Angular syntax and patterns, covering the major changes
